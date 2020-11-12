@@ -1,18 +1,41 @@
+//Assign click listener to button. Creates new to do item
 var button = document.getElementById("button");
+button.addEventListener("click", buttonAddItem);
+
+//Assign keyboard enter to text entry. Creates new to do item
 var newTodoItem = document.getElementById("newTodo");
-// var list = document.getElementById("checklist");
-var delButton = document.querySelectorAll("img");
+newTodoItem.addEventListener("keypress", keyboardAddItem);
+
+//Assign change listener to checklist items. Moves to 'Completed' section
+var checkList = document.getElementById("checklist");
+checkList.addEventListener("change", done);
+
+//Assign change listener to completed items list. Moves out of 'Completed' and to above checklist
 var checkListDone = document.getElementById("checklist-done");
-var checkList = document.getElementById("checklist")
+checkListDone.addEventListener("change", done);
 
+//Initialise completed item count to 0
 window.onload = function(){
-    for (let i = 0; i < delButton.length; i++) {
-        delButton[i].addEventListener("click", deleteItem);
-    }
-    checkList.addEventListener("change", done);
-    updateCompletedItems();
-};
+    updateCompletedItems(); 
+}
 
+//Add new item when clicking Add Item button
+function buttonAddItem() {
+
+    if(validateNewItem()) {
+        createCheckItem();
+    }
+}
+
+//Add new item when pressing Enter
+function keyboardAddItem(event) {
+
+    if(validateKeyPress(event)) {
+        createCheckItem();
+    }
+}
+
+//Validate entry isn't empty and doesnt already exist
 function validateNewItem() {
     if (newTodoItem.value.length > 0 && document.getElementById(newTodoItem.value) === null) {
         return true;
@@ -21,6 +44,7 @@ function validateNewItem() {
     }
 }
 
+//Validate the Enter key is pressed to add item to list
 function validateKeyPress(event) {
     if (validateNewItem() && event.keyCode === 13) {
         return true;
@@ -29,127 +53,143 @@ function validateKeyPress(event) {
     }
 }
 
-// function createItem(){
-//     var newLi = document.createElement("li");
-//     newLi.textContent = newTodoItem.value;
-//     newLi.setAttribute("class", " ");
-//     list.appendChild(newLi);
-//     newTodoItem.value = '';
-    
-//     var newDel = document.createElement("button");
-//     newDel.addEventListener("click", deleteItem);
-//     newDel.textContent = "Delete";
-//     // newDel.setAttribute("class", "delButt");
-//     var lastLi = document.getElementById("list").lastElementChild;
-//     lastLi.appendChild(newDel);
-// }
-
-function checkDefault() {
-
-    var defaultLabel = document.getElementById("default");
-
-    if (defaultLabel !== null) {
-        defaultLabel.remove();
-    }
-    else if (document.getElementById("checklist").childElementCount === 0) {
-        var newCheck = document.createElement("input");
-        newCheck.type = "checkbox";
-        newCheck.name = "default";
-        var newCheckLabel = document.createElement("label");
-        newCheckLabel.setAttribute("id", "default");
-        checkList.appendChild(newCheckLabel);
-        newCheckLabel.textContent = "To Do Item...";
-        newCheckLabel.insertAdjacentElement('afterbegin', newCheck);
-   
-        var newDel = document.createElement("img");
-        newDel.addEventListener("click", deleteItem);
-       
-        newDel.src = 'xlogo.png';
-        var lastLi = document.getElementById("checklist").lastElementChild;
-        
-        lastLi.appendChild(newDel);
-        newTodoItem.value = '';
-    }
-
-}
-
+//Create a new to do item
 function createCheckItem(){
 
-    var newCheck = document.createElement("input");
-    newCheck.type = "checkbox";
-    newCheck.name = newTodoItem.value;
-    var newCheckLabel = document.createElement("label");
-    
-    newCheckLabel.setAttribute("id", newTodoItem.value);
-    checkList.appendChild(newCheckLabel);
-    newCheckLabel.textContent = newTodoItem.value;
-    newCheckLabel.insertAdjacentElement('afterbegin', newCheck);
-   
-    
+    if (checkDefault()) { //Checks to see if its the first item in the list
 
-    //var newDel = document.createElement("button");
-    var newDel = document.createElement("img");
-    newDel.addEventListener("click", deleteItem);
-    //newDel.textContent = "x";
-    newDel.src = 'xlogo.png';
-    var lastLi = document.getElementById("checklist").lastElementChild;
-    
-    lastLi.appendChild(newDel);
-    newTodoItem.value = '';
+        //Create new item
+        let newItem = document.createElement("input");
+        newItem.type = "checkbox";
+        newItem.name = newTodoItem.value;
+        let newItemLabel = document.createElement("label");
+        newItemLabel.setAttribute("id", newTodoItem.value);
+        checkList.appendChild(newItemLabel);
+        newItemLabel.textContent = newTodoItem.value;
+        newItemLabel.insertAdjacentElement('afterbegin', newItem);
 
-    checkDefault();
+        //Create delete button
+        let newDel = document.createElement("img");
+        newDel.addEventListener("click", deleteItem);
+        newDel.src = 'xlogo.png';
 
-}
+        //Adds button to the new item
+        let lastLi = document.getElementById("checklist").lastElementChild;
+        lastLi.appendChild(newDel);
 
-function buttonAddItem() {
-    if(validateNewItem()){
-        createCheckItem();
+        //Reset the text box
+        newTodoItem.value = '';
+
     }
 }
 
-function keyboardAddItem(event) {
-    if(validateKeyPress(event)) {
-        createCheckItem();
+//Check if item in checklist is default placeholder and removes it if it is
+function checkDefault() {
+
+    let allEntries = document.getElementsByTagName("label");
+
+    if (allEntries[0].id === "default"){
+        allEntries[0].remove();
+        return true;
+    } else {
+        return true;
     }
 }
 
+//Move item to the completed list
 function done(event) {
 
-    var listItem = event.target
-    var checkDoneItem = document.getElementById(listItem.name);
+    let listItem = event.target
+    let defaultItemCheck = document.getElementById(listItem.name);
 
-    if(checkDoneItem.classList.contains("done")){
-            checkDoneItem.toggleAttribute("class");       
-            checkList.appendChild(checkDoneItem);
-        } else { 
-            checkDoneItem.setAttribute("class", "done");   
-            checkListDone.appendChild(checkDoneItem);     
+    //If item is the default placeholder dont move it
+    if (listItem.getAttribute('name') === "default" ) {
+        return;
+    } else {
+        
+        if(defaultItemCheck.classList.contains("done")) {
+            
+            //If the item is already in the done list then move to undone
+            defaultItemCheck.toggleAttribute("class");   
+            checkList.appendChild(defaultItemCheck);
+            
+            //Remove the default placeholder if checklist is empty
+            if (document.getElementById("checklist").childElementCount > 1 && document.getElementsByTagName("label")[0].id === "default") {
+                document.getElementsByTagName("label")[0].remove();
+            }
+
+        } else {
+            
+            //Move item to completed
+            defaultItemCheck.setAttribute("class", "done");   
+            checkListDone.appendChild(defaultItemCheck);
+            
+            //If no more items remain in checklist create placeholder
+            if (document.getElementById("checklist").childElementCount === 0) {
+                
+                createPlaceholder();
+            }
         }
-    
-    updateCompletedItems();
-    checkDefault();
-
+        updateCompletedItems();
+    }
 }
 
+//Delete item from any of the lists
 function deleteItem(e) {
 
-    var rmv = e.target.parentNode;
-    rmv.remove();
+    let listItem = e.target;
+
+    //If item is the default placeholder dont move it
+    if (listItem.getAttribute('name') === "default" ) {
+
+        return;
+
+    } else {
+        
+        let rmv = e.target.parentNode;
+        rmv.remove();
+        
+        //If no more items remain in checklist create placeholder
+        if (document.getElementById("checklist").childElementCount === 0){
+
+            createPlaceholder();
+
+    }
+
+    }
     updateCompletedItems();
-    checkDefault();
-    
 }
 
 //Count how many completed items there are
-
 function updateCompletedItems() {
-    var completedItemsCount = document.getElementById("checklist-done").childElementCount;
-    var completedItemsTitelElement = document.getElementsByClassName("completedItemsTitle")[0];
+
+    let completedItemsCount = document.getElementById("checklist-done").childElementCount;
+    let completedItemsTitelElement = document.getElementsByClassName("completedItemsTitle")[0];
     completedItemsTitelElement.textContent = completedItemsCount + " Completed Items";
-};
+    return;
 
-button.addEventListener("click", buttonAddItem);
-newTodoItem.addEventListener("keypress", keyboardAddItem);
-checkList.addEventListener("change", done);
-checkListDone.addEventListener("change", done);
+}
 
+//Create default placeholder when nothing left in checklist
+function createPlaceholder() {
+
+    //Create placeholder item
+    var newCheck = document.createElement("input");
+    newCheck.type = "checkbox";
+    newCheck.name = "default";
+    var newCheckLabel = document.createElement("label");
+    newCheckLabel.setAttribute("id", "default");
+    checkList.appendChild(newCheckLabel);
+    newCheckLabel.textContent = "To Do Item...";
+    newCheckLabel.insertAdjacentElement('afterbegin', newCheck);
+    
+    //Create delete button
+    var newDel = document.createElement("img");            
+    newDel.src = 'xlogo.png';
+    var lastLi = document.getElementById("checklist").lastElementChild;   
+    lastLi.appendChild(newDel);
+
+    //Reset the text box
+    newTodoItem.value = '';
+
+}

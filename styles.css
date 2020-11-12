@@ -9,91 +9,18 @@ h1 {
     font-weight: 300;
     font-size: 2.5em;
     color: #232323;
-    font-family: 'Give You Glory', cursive;
+    font-family: 'Merriweather', serif;
     margin: 40px 0 10px 0;
-}
-
-.itemEntry {
-    margin: auto;
-    /* padding: 10px; */
-    width: 100%;
-    padding: 0 0 20px 0;
-}
-
-#button {
-    float: right;
-    width: 20%;
-    padding: 7px;
-    background-color: #078080;
-    border: none;
-    color: #f8f5f2;
-    border-radius: 3px;
-    font-weight: 400;
-}
-
-
-
-
-#newTodo {
-    width: 70%;
-    padding: 5px 0 5px 5px;
-    /* border-color: #c9c9c9; */
-    /* border: 0.5px solid #c9c9c9; */
-}
-
-.container-card {
-    width: 50%;
-    margin: 0 auto;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* border: 1px solid black; */
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    /* border: 1px solid black; */
-    width: 71%
-}
-
-.container-lists {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    /* border: 1px solid black; */
-    /* margin: auto; */
-}
-
-.done {
-    text-decoration: line-through;
-    
 }
 
 label {
     padding: 10px 0 0 0;
     font-size: 0.8em;
-    /* font-family: Arial, Helvetica, sans-serif; */
 }
 
 label input {
     float: left;
-    /* border: 0.5px solid #c9c9c9; */
     margin: 0.3px 7px 0 0;
-}
-
-
-
-#delButtons {
-    list-style-type: none;
-}
-
-
-#list li button{
-    margin: 0 0 10px 20px;
 }
 
 li {
@@ -111,16 +38,46 @@ button {
 }
 
 img { 
-    /* text-decoration: none; */
     cursor: pointer;
     float: right;
     width: 10px;
-    /* background-color:  #ffffff00; */
-    /* size: 5em; */
-    /* border: none; */
-    /* color: rgb(128, 128, 128); */
     padding: 3px 0 0 0;
     opacity: 0.5;
+}
+
+.itemEntry {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0;
+    margin: auto;
+    width: 100%;
+    padding: 20px 0 20px 0;
+    justify-content: space-between;
+}
+
+.container-card {
+    width: 50%;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 71%
+}
+
+.container-lists {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.done {
+    text-decoration: line-through;
 }
 
 .completedItemsTitle {
@@ -129,6 +86,36 @@ img {
     opacity: 0.5;
 }
 
+#button {
+    float: right;
+    width: 20%;
+    padding: 7px;
+    background-color: #078080;
+    border: none;
+    color: #f8f5f2;
+    border-radius: 3px;
+    font-weight: 400;
+}
+
+#newTodo {
+    width: 70%;
+    padding: 5px 0 5px 5px;
+}
+
+#delButtons {
+    list-style-type: none;
+}
+
+#list li button{
+    margin: 0 0 10px 20px;
+}
+
 #default {
     opacity: 0.4;
+}
+
+@media only screen and (max-width: 800px) {
+    .container-card{
+        width: 70%;
+    }
 }
