@@ -16,6 +16,7 @@ checkListDone.addEventListener("change", done);
 
 //Initialise completed item count to 0
 window.onload = function(){
+    document.getElementsByTagName("input")[1].disabled = true;
     updateCompletedItems(); 
 }
 
@@ -191,5 +192,7 @@ function createPlaceholder() {
 
     //Reset the text box
     newTodoItem.value = '';
+
+    newCheck.disabled = true;
 
 }
