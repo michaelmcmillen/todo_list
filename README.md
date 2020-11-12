@@ -2,4 +2,4 @@
 
 A simple to do list, created using HTML, CSS and Javascript.
 
-Click <a href='https://github.com/michaelmcmillen/todo_list'>here</a> to view.
+Click <a href='https://michaelmcmillen.github.io/todo_list/'>here</a> to view.
